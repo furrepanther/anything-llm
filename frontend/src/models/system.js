@@ -520,10 +520,11 @@ const System = {
         return { apiKey: null, error: e.message };
       });
   },
-  generateApiKey: async function () {
+  generateApiKey: async function (data = {}) {
     return fetch(`${API_BASE}/system/generate-api-key`, {
       method: "POST",
       headers: baseHeaders(),
+      body: JSON.stringify(data),
     })
       .then((res) => {
         if (!res.ok) {
@@ -840,6 +841,21 @@ const System = {
    */
   isFileSystemAgentAvailable: async function () {
     return fetch(`${API_BASE}/agent-skills/filesystem-agent/is-available`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .then((res) => res?.available ?? false)
+      .catch(() => false);
+  },
+
+  /**
+   * Checks if the create-files-agent skill is available.
+   * The create-files-agent skill is only available when running in a Docker container.
+   * @returns {Promise<boolean>}
+   */
+  isCreateFilesAgentAvailable: async function () {
+    return fetch(`${API_BASE}/agent-skills/create-files-agent/is-available`, {
       method: "GET",
       headers: baseHeaders(),
     })

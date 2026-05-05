@@ -3,13 +3,17 @@ import AgentSQLConnectorSelection from "./SQLConnectorSelection";
 import GenericSkillPanel from "./GenericSkillPanel";
 import DefaultSkillPanel from "./DefaultSkillPanel";
 import FileSystemSkillPanel from "./FileSystemSkillPanel";
+import CreateFileSkillPanel from "./CreateFileSkillPanel";
+import GMailSkillPanel from "./GMailSkillPanel";
+import GoogleCalendarSkillPanel from "./GoogleCalendarSkillPanel";
+import OutlookSkillPanel from "./OutlookSkillPanel";
 import {
   Brain,
   File,
   Browser,
   ChartBar,
-  FileMagnifyingGlass,
   FolderOpen,
+  FilePlus,
 } from "@phosphor-icons/react";
 import RAGImage from "@/media/agents/rag-memory.png";
 import SummarizeImage from "@/media/agents/view-summarize.png";
@@ -17,6 +21,9 @@ import ScrapeWebsitesImage from "@/media/agents/scrape-websites.png";
 import GenerateChartsImage from "@/media/agents/generate-charts.png";
 import GenerateSaveImages from "@/media/agents/generate-save-files.png";
 import FileSystemImage from "@/media/agents/file-system.png";
+import GMailIcon from "./GMailSkillPanel/gmail.png";
+import OutlookIcon from "./OutlookSkillPanel/outlook.png";
+import GoogleCalendarIcon from "./GoogleCalendarSkillPanel/google-calendar.png";
 
 export const getDefaultSkills = (t) => ({
   "rag-memory": {
@@ -47,7 +54,7 @@ export const getDefaultSkills = (t) => ({
 
 export const getConfigurableSkills = (
   t,
-  { fileSystemAgentAvailable = true } = {}
+  { fileSystemAgentAvailable = true, createFilesAgentAvailable = true } = {}
 ) => ({
   ...(fileSystemAgentAvailable && {
     "filesystem-agent": {
@@ -59,14 +66,16 @@ export const getConfigurableSkills = (
       image: FileSystemImage,
     },
   }),
-  "save-file-to-browser": {
-    title: t("agent.skill.save.title"),
-    description: t("agent.skill.save.description"),
-    component: GenericSkillPanel,
-    skill: "save-file-to-browser",
-    icon: FileMagnifyingGlass,
-    image: GenerateSaveImages,
-  },
+  ...(createFilesAgentAvailable && {
+    "create-files-agent": {
+      title: t("agent.skill.createFiles.title"),
+      description: t("agent.skill.createFiles.description"),
+      component: CreateFileSkillPanel,
+      skill: "create-files-agent",
+      icon: FilePlus,
+      image: GenerateSaveImages,
+    },
+  }),
   "create-chart": {
     title: t("agent.skill.generate.title"),
     description: t("agent.skill.generate.description"),
@@ -86,5 +95,43 @@ export const getConfigurableSkills = (
     description: t("agent.skill.sql.description"),
     component: AgentSQLConnectorSelection,
     skill: "sql-agent",
+  },
+});
+
+export const getAppIntegrationSkills = (t) => ({
+  "gmail-agent": {
+    title: t("agent.skill.gmail.title"),
+    description: t("agent.skill.gmail.description"),
+    component: GMailSkillPanel,
+    skill: "gmail-agent",
+    Icon: ({ size }) => (
+      <img src={GMailIcon} alt="GMail" width={size} height={size} />
+    ),
+    mode: ["singleUserOnly"],
+  },
+  "google-calendar-agent": {
+    title: t("agent.skill.googleCalendar.title"),
+    description: t("agent.skill.googleCalendar.description"),
+    component: GoogleCalendarSkillPanel,
+    skill: "google-calendar-agent",
+    Icon: ({ size }) => (
+      <img
+        src={GoogleCalendarIcon}
+        alt="Google Calendar"
+        width={size}
+        height={size}
+      />
+    ),
+    mode: ["singleUserOnly"],
+  },
+  "outlook-agent": {
+    title: t("agent.skill.outlook.title"),
+    description: t("agent.skill.outlook.description"),
+    component: OutlookSkillPanel,
+    skill: "outlook-agent",
+    Icon: ({ size }) => (
+      <img src={OutlookIcon} alt="Outlook" width={size} height={size} />
+    ),
+    mode: ["singleUserOnly"],
   },
 });

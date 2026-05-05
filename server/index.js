@@ -26,6 +26,7 @@ const { agentWebsocket } = require("./endpoints/agentWebsocket");
 const {
   agentSkillWhitelistEndpoints,
 } = require("./endpoints/agentSkillWhitelist");
+const { agentFileServerEndpoints } = require("./endpoints/agentFileServer");
 const { experimentalEndpoints } = require("./endpoints/experimental");
 const { browserExtensionEndpoints } = require("./endpoints/browserExtension");
 const { communityHubEndpoints } = require("./endpoints/communityHub");
@@ -34,6 +35,13 @@ const { mcpServersEndpoints } = require("./endpoints/mcpServers");
 const { mobileEndpoints } = require("./endpoints/mobile");
 const { webPushEndpoints } = require("./endpoints/webPush");
 const { telegramEndpoints } = require("./endpoints/telegram");
+const { scheduledJobEndpoints } = require("./endpoints/scheduledJobs");
+const {
+  outlookAgentEndpoints,
+} = require("./endpoints/utils/outlookAgentUtils");
+const {
+  googleAgentSkillEndpoints,
+} = require("./endpoints/utils/googleAgentSkillEndpoints");
 const { httpLogger } = require("./middleware/httpLogger");
 const app = express();
 const apiRouter = express.Router();
@@ -79,6 +87,7 @@ utilEndpoints(apiRouter);
 documentEndpoints(apiRouter);
 agentWebsocket(apiRouter);
 agentSkillWhitelistEndpoints(apiRouter);
+agentFileServerEndpoints(apiRouter);
 experimentalEndpoints(apiRouter);
 developerEndpoints(app, apiRouter);
 communityHubEndpoints(apiRouter);
@@ -87,6 +96,9 @@ mcpServersEndpoints(apiRouter);
 mobileEndpoints(apiRouter);
 webPushEndpoints(apiRouter);
 telegramEndpoints(apiRouter);
+scheduledJobEndpoints(apiRouter);
+outlookAgentEndpoints(apiRouter);
+googleAgentSkillEndpoints(apiRouter);
 // Externally facing embedder endpoints
 embeddedEndpoints(apiRouter);
 
